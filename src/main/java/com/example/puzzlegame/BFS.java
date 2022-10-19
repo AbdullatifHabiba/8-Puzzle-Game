@@ -1,0 +1,47 @@
+package com.example.puzzlegame;
+
+import java.util.*;
+
+public class BFS {
+    HashSet<String> visited = new HashSet<>();
+    HashSet<String> list = new HashSet<>();
+
+    Queue<StateNode> frontier = new LinkedList<>();
+    public HashSet<String> get_expanded(){
+        return visited;
+    }
+    private StateNode Goal;
+    public StateNode get_goal(){
+        return Goal;
+    }
+    public boolean BreadthFirstSearch(StateNode initState, String goal) {
+        frontier.add(initState);
+        list.add(initState.getState());
+        while (!frontier.isEmpty()) {
+            StateNode state = frontier.poll();
+            list.remove(state.getState());
+            visited.add(state.getState());
+
+            if(state.getState().equals(goal)) {
+                Goal=state;
+                return true;
+            }
+
+            List<StateNode> neighbors = state.getNeighbors();
+            for (StateNode neighbor : neighbors) {
+                // System.out.print(neighbor.getState()+" | ");
+
+                if (!list.contains(neighbor.getState()) && !visited.contains(neighbor.getState())) {
+                    frontier.add(neighbor);
+                    list.add(state.getState());
+                }
+            }
+           // System.out.println(" ");
+
+        }
+
+
+        return false;
+    }
+
+}
