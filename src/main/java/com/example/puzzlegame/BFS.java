@@ -29,14 +29,14 @@ public class BFS {
 
             List<StateNode> neighbors = state.getNeighbors();
             for (StateNode neighbor : neighbors) {
-                // System.out.print(neighbor.getState()+" | ");
+               // System.out.print(neighbor.getState()+" | ");
 
                 if (!list.contains(neighbor.getState()) && !visited.contains(neighbor.getState())) {
                     frontier.add(neighbor);
                     list.add(state.getState());
                 }
             }
-           // System.out.println(" ");
+            //System.out.println(" "+"frontier size:"+frontier.size());
 
         }
 

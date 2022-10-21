@@ -11,7 +11,12 @@ public class ResultState {
     public ArrayList<String> getPath_to_goal() {
         return path_to_goal;
     }
-  public int cost_of_path;
+    public int cost_of_path;
+
+    public int getCost_of_path() {
+        return cost_of_path;
+    }
+
 
     public HashSet getNodes_expanded() {
         return nodes_expanded;
@@ -41,9 +46,12 @@ public class ResultState {
          Stack<String> stack=new Stack<>();
         while (state != null) {
             stack.push(state.getState());
+            cost_of_path+=state.getCost();
+            System.out.println(state.getState());
+
             state = state.getParent();
         }
-        while (!stack.empty())path_to_goal.add(stack.pop());
+        while (!stack.empty()){path_to_goal.add(stack.pop());};
         search_depth=path_to_goal.size();
         }
 

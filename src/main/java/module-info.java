@@ -1,4 +1,5 @@
-module com.example.puzzlegame {
+module com.example.puzzlegame
+{
     requires javafx.controls;
     requires javafx.fxml;
 

@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Stack;
 
 public class GameGui extends Application {
@@ -121,16 +122,36 @@ public class GameGui extends Application {
             index = 0;
             prev.setDisable(true);
 
-            String method = chooseAlgorithm.getValue().toString();
-            String heuristic = chooseHeuristic.getValue().toString();
+
 
             String intState = inStateval.getText();
             String goalState = goal.getText();
+            Alert error;
+            if (!validate_input(intState)||!validate_input(goalState))
+            {
+                error = new Alert(Alert.AlertType.ERROR,"Enter Valid Input");
+                error.show();
+                return;
+            }
+
+
+            String method = chooseAlgorithm.getValue().toString();
+            if(method==""){
+                error = new Alert(Alert.AlertType.ERROR,"you should choose method");
+                error.show();
+                return;
+            }
+            String heuristic = chooseHeuristic.getValue().toString();
+            if(!check_solvable(intState)){
+                error = new Alert(Alert.AlertType.ERROR,"Sorry:This not a Solvable State !! ");
+                error.show();
+                return;
+            }
             ResultState resultState = solver(method, heuristic, intState, goalState);
             states = resultState.getPath_to_goal();
-
+            System.out.println(states.size());
             nodesExpandVal.setText(String.valueOf(resultState.nodes_expanded.size()));
-            pathCostVal.setText(String.valueOf(resultState.search_depth));
+            pathCostVal.setText(String.valueOf(resultState.getCost_of_path()));
             searchDepthVal.setText(String.valueOf(resultState.search_depth));
             runningTimeVal.setText(String.valueOf(resultState.getRunning_time()));
 
@@ -285,7 +306,42 @@ public class GameGui extends Application {
             }
         }
     }
+   public boolean check_solvable(String state){
+       int numOfInversions=0;
+       for(int i=0;i<state.length();i++)
+       {
+           for(int j=i+1;j<state.length();j++)
+           {
+               if((state.charAt(i)-'0'>0) && (state.charAt(j)-'0')>0 && state.charAt(i)>state.charAt(j))
+               {
+                   numOfInversions++;
+               }
+           }
+       }
+       if(numOfInversions%2 ==0)
+       {
+           return true;
+       }
+       else{
+           return false;
+       }
+    }
+   public boolean validate_input(String state){
+        if (state.length()!=9){
+            return false;
+        }
 
+       for (int i = 0; i < state.length(); i++) {
+           int c=Integer.parseInt(String.valueOf(state.toCharArray()[i]));
+           if(!(c>=0 &&c<=8))
+           {
+               return false;
+           }
+       }
+
+
+       return true;
+   }
     public static void main(String[] args) {
         launch();
     }
