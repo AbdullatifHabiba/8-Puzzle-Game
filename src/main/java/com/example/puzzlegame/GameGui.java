@@ -150,10 +150,10 @@ public class GameGui extends Application {
             ResultState resultState = solver(method, heuristic, intState, goalState);
             states = resultState.getPath_to_goal();
             System.out.println(states.size());
-            nodesExpandVal.setText(String.valueOf(resultState.nodes_expanded.size()));
+            nodesExpandVal.setText(String.valueOf(resultState.getNodes_expanded().size()));
             pathCostVal.setText(String.valueOf(resultState.getCost_of_path()));
-            searchDepthVal.setText(String.valueOf(resultState.search_depth));
-            runningTimeVal.setText(String.valueOf(resultState.getRunning_time()));
+            searchDepthVal.setText(String.valueOf(resultState.getSearch_depth()));
+            runningTimeVal.setText(String.format("%.3f",(resultState.getRunning_time())/1_000_000_000)+" Secs");
 
             resultState.getPath_to_goal().forEach(System.out::println);
 
@@ -246,33 +246,38 @@ public class GameGui extends Application {
     }
 
     private ResultState solver(String method, String heurstic, String intstate, String goal) {
-        ResultState resultState = new ResultState();
+        ResultState resultState =  new ResultState();
         switch (method) {
             case "A*":
                 Asearch AS = new Asearch();
-                long start = System.currentTimeMillis();
+                long start = System.nanoTime();
                 AS.AStarSearch(new StateNode(intstate, -1, 0, heurstic), goal);
-                long end = System.currentTimeMillis();
+                long end = System.nanoTime();
                 resultState.FinalStates(AS.get_goal());
                 resultState.setNodes_expanded(AS.get_expanded());
                 resultState.setRunning_time(end - start);
+                break;
             case "DFS":
                 DFS dfs = new DFS();
-                start = System.currentTimeMillis();
+                start = System.nanoTime();
                 dfs.DepthFirstSearch(new StateNode(intstate, -1, 0), goal);
-                end = System.currentTimeMillis();
+                end = System.nanoTime();
                 resultState.setRunning_time(end - start);
                 resultState.FinalStates(dfs.get_goal());
                 resultState.setNodes_expanded(dfs.get_expanded());
+                resultState.setCost_of_path(resultState.getSearch_depth());
+                break;
             case "BFS":
+
                 BFS bfs = new BFS();
-                start = System.currentTimeMillis();
+                start = System.nanoTime();
                 bfs.BreadthFirstSearch(new StateNode(intstate, -1, 0), goal);
-                end = System.currentTimeMillis();
+                end = System.nanoTime();
                 resultState.setRunning_time(end - start);
                 resultState.FinalStates(bfs.get_goal());
                 resultState.setNodes_expanded(bfs.get_expanded());
-
+                resultState.setCost_of_path(resultState.getSearch_depth());
+                break;
         }
 
         return resultState;

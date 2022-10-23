@@ -7,6 +7,7 @@ import java.util.Stack;
 
 public class DFS {
     HashSet<String> visited =new HashSet<>();
+    //this is a help hash to store states in forntier as strings only
     HashSet<String> list =new HashSet<>();
 
     Stack<StateNode> frontier=new Stack<>();
@@ -30,7 +31,7 @@ public class DFS {
                 Goal=state;
                 return true;
             }
-
+          //this list of neighbors of current state
             List<StateNode> neighbors = state.getNeighbors();
             for (StateNode neighbor : neighbors) {
 

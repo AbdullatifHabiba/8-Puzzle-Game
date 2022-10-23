@@ -4,6 +4,7 @@ import java.util.*;
 
 public class BFS {
     HashSet<String> visited = new HashSet<>();
+    //this is a help hash to store states in forntier as strings only
     HashSet<String> list = new HashSet<>();
 
     Queue<StateNode> frontier = new LinkedList<>();
@@ -26,17 +27,17 @@ public class BFS {
                 Goal=state;
                 return true;
             }
-
+            //this list of neighbors of current state
             List<StateNode> neighbors = state.getNeighbors();
             for (StateNode neighbor : neighbors) {
-               // System.out.print(neighbor.getState()+" | ");
+
 
                 if (!list.contains(neighbor.getState()) && !visited.contains(neighbor.getState())) {
                     frontier.add(neighbor);
                     list.add(state.getState());
                 }
             }
-            //System.out.println(" "+"frontier size:"+frontier.size());
+
 
         }
 

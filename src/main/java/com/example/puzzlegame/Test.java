@@ -21,14 +21,14 @@ public class Test {
 
         System.out.println("third :"+(G2-G)+"secs");
         */
-        BFS obj = new BFS();
+        Asearch obj = new Asearch();
         ResultState resultState=new ResultState();
         long G = System.currentTimeMillis();
-        obj.BreadthFirstSearch(new StateNode("786543210",-1,0), "012345678");
+        obj.AStarSearch(new StateNode("142658730",-1,0,"manhattan"), "012345678");
         long G2 = System.currentTimeMillis();
-        System.out.println(obj.get_goal());
+        System.out.println(obj.get_goal().getState());
         resultState.FinalStates(obj.get_goal());
-        resultState.getNodes_expanded().forEach(System.out::println);
+      //  resultState.getNodes_expanded().forEach(System.out::println);
         System.out.println("first :"+(G2-G)+"secs");
 
 //        G = System.currentTimeMillis();

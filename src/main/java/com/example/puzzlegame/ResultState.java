@@ -8,37 +8,30 @@ public class ResultState {
 
 
     private ArrayList<String> path_to_goal;
-    public ArrayList<String> getPath_to_goal() {
-        return path_to_goal;
-    }
-    public int cost_of_path;
-
+    private int cost_of_path;
+    private HashSet nodes_expanded;
+    private int search_depth;
+    private double running_time;
     public int getCost_of_path() {
         return cost_of_path;
     }
-
-
-    public HashSet getNodes_expanded() {
-        return nodes_expanded;
+    public double getRunning_time() {
+        return running_time;
     }
-
+    public void setRunning_time(double running_time) {
+        this.running_time = running_time;
+    }
+    public HashSet getNodes_expanded() {
+        return this.nodes_expanded;
+    }
     public void setNodes_expanded(HashSet nodes_expanded) {
         this.nodes_expanded = nodes_expanded;
     }
-
-    public HashSet nodes_expanded;
-  public int search_depth;
-
-    public long getRunning_time() {
-        return running_time;
+    public int getSearch_depth() {return search_depth;}
+    public ArrayList<String> getPath_to_goal() {
+        return path_to_goal;
     }
-
-    public void setRunning_time(long running_time) {
-        this.running_time = running_time;
-    }
-
-    public long running_time;
-
+    public void setCost_of_path(int cost_of_path) {this.cost_of_path = cost_of_path;}
 
 
     public void FinalStates(StateNode state) {
@@ -47,12 +40,13 @@ public class ResultState {
         while (state != null) {
             stack.push(state.getState());
             cost_of_path+=state.getCost();
-            System.out.println(state.getState());
-
             state = state.getParent();
         }
-        while (!stack.empty()){path_to_goal.add(stack.pop());};
-        search_depth=path_to_goal.size();
+        while (!stack.empty()) {
+            String st = stack.pop();
+            path_to_goal.add(st);
+        }
+        search_depth = path_to_goal.size();
         }
 
 }
